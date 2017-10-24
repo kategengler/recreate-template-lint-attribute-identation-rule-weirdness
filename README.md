@@ -1,51 +1,56 @@
 # recreate-lint-weirdness
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This repository is a recreation of a weirdness I encountered with ember-cli-template-lint & the 'attribute-indentation' rule.
 
-## Prerequisites
+The following template is in application.hbs:
 
-You will need the following things properly installed on your computer.
+```hbs
+{{thing-with-attributes-nonblock
+  foo=5
+  three=2
+  six="seven"
+}}
+{{thing-with-attributes-nonblock
+  foo=5
+  three=2
+  six="seven"
+}}
+{{thing-with-attributes-nonblock
+  foo=5
+  three=2
+  six="seven"
+}}
+```
+When running `npx ember-template-lint app/templates`, I get the following output:
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with NPM)
-* [Ember CLI](https://ember-cli.com/)
-* [Google Chrome](https://google.com/chrome/)
+```bash
+/Users/katie/dev/recreate-lint-weirdness/app/templates/application.hbs
+  7:2  error  Incorrect indentation of attribute 'foo' beginning at L7:C2. Expected 'foo' to be indentation at an of 7 but was found at 2  attribute-indentation
+  8:2  error  Incorrect indentation of attribute 'three' beginning at L8:C2. Expected 'three' to be indentation at an of 7 but was found at 2  attribute-indentation
+  9:2  error  Incorrect indentation of attribute 'six' beginning at L9:C2. Expected 'six' to be indentation at an of 7 but was found at 2  attribute-indentation
+  12:2  error  Incorrect indentation of attribute 'foo' beginning at L12:C2. Expected 'foo' to be indentation at an of 12 but was found at 2  attribute-indentation
+  13:2  error  Incorrect indentation of attribute 'three' beginning at L13:C2. Expected 'three' to be indentation at an of 12 but was found at 2  attribute-indentation
+  14:2  error  Incorrect indentation of attribute 'six' beginning at L14:C2. Expected 'six' to be indentation at an of 12 but was found at 2  attribute-indentation
 
-## Installation
+✖ 6 problems
+```
 
-* `git clone <repository-url>` this repository
-* `cd recreate-lint-weirdness`
-* `npm install`
+To pass linting, I must change the template to:
 
-## Running / Development
-
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-* Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
-
-### Code Generators
-
-Make use of the many generators for code, try `ember help generate` for more details
-
-### Running Tests
-
-* `ember test`
-* `ember test --server`
-
-### Building
-
-* `ember build` (development)
-* `ember build --environment production` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](https://emberjs.com/)
-* [ember-cli](https://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+```hbs
+{{thing-with-attributes-nonblock
+  foo=5
+  three=2
+  six="seven"
+}}
+{{thing-with-attributes-nonblock
+       foo=5
+       three=2
+       six="seven"
+}}
+{{thing-with-attributes-nonblock
+            foo=5
+            three=2
+            six="seven"
+}}
+```
